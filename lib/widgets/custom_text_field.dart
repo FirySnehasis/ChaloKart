@@ -47,7 +47,10 @@ class CustomTextField extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: const TextStyle(color: AppColors.hintColor),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.grey),
@@ -64,17 +67,18 @@ class CustomTextField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: AppColors.errorColor),
                 ),
-                suffixIcon: isPassword
-                    ? IconButton(
-                        icon: Icon(
-                          value ? Icons.visibility_off : Icons.visibility,
-                          color: AppColors.primaryColor,
-                        ),
-                        onPressed: () {
-                          _showPassword.value = !_showPassword.value;
-                        },
-                      )
-                    : suffixIcon,
+                suffixIcon:
+                    isPassword
+                        ? IconButton(
+                          icon: Icon(
+                            value ? Icons.visibility_off : Icons.visibility,
+                            color: AppColors.primaryColor,
+                          ),
+                          onPressed: () {
+                            _showPassword.value = !_showPassword.value;
+                          },
+                        )
+                        : suffixIcon,
               ),
             );
           },
@@ -82,4 +86,4 @@ class CustomTextField extends StatelessWidget {
       ],
     );
   }
-} 
+}
