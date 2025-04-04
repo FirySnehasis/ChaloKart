@@ -134,7 +134,7 @@ class AboutUsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 15),
                     Text(
-                      "ChaloKart is a mobile application developed by a team of enthusiastic tech geeks from IIT Kanpur as part of their CS253 Course project. Our goal is to provide a seamless and user-friendly shopping experience to our users.",
+                      "ChaloKart is a mobile application developed by a team of enthusiastic tech geeks from IIT Kanpur as part of their CS253 Course project. Our goal is to provide a seamless and user-friendly transport experience to our users.",
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColors.textColor,
