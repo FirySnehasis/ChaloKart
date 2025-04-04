@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:chalo_kart_user/screens/splash_screen.dart';
 import 'package:chalo_kart_user/infoHandler/app_info.dart';
@@ -10,6 +11,7 @@ import 'package:chalo_kart_user/themeProvider/theme_provider.dart';
 import 'package:chalo_kart_user/utils/app_colors.dart';
 
 Future<void> main() async {
+  await dotenv.load();
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
