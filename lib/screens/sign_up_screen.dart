@@ -412,39 +412,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          stops: [0, 0.32, 0.32, 1],
-          colors: [
-            AppColors.primaryColor,
-            AppColors.primaryColor,
-            Color(0xFFF8F8F8),
-            Color(0xFFF8F8F8),
-          ],
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent, // Make Scaffold background transparent
-        appBar: AppBar(
-          title: const Text('Sign Up'),
-          backgroundColor: AppColors.primaryColor,
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 24),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: AppColors.primaryColor),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
