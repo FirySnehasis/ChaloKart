@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chalo_kart_user/infoHandler/app_info.dart';
+import 'package:chalo_kart_user/Assistance/assistance_methods.dart';
 
+import '../Assistance/assistance_methods.dart';
 import '../widgets/history_design_ui.dart';
 
 class TripsHistoryScreen extends StatefulWidget {
-  const TripsHistoryScreen({Key? key}) : super(key: key);
+  const TripsHistoryScreen({super.key});
 
   @override
   State<TripsHistoryScreen> createState() => _TripsHistoryScreenState();
 }
 
 class _TripsHistoryScreenState extends State<TripsHistoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Clear existing history list
+    Provider.of<AppInfo>(context, listen: false).allTripsHistoryInformationList.clear();
+    // Load trip history data
+    AssistantMethods.readTripsKeysForOnlineUser(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     bool darkTheme =
@@ -44,28 +55,24 @@ class _TripsHistoryScreenState extends State<TripsHistoryScreen> {
 
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView.separated(
-          itemBuilder: (context, i) {
-            return Card(
-              color: darkTheme ? Colors.black : Colors.grey[100],
-              shadowColor: Colors.transparent,
-              child: HistoryDesignUIWidget(
-                tripsHistoryModel:
-                    Provider.of<AppInfo>(
-                      context,
-                      listen: false,
-                    ).allTripsHistoryInformationList[i],
-              ),
+        child: Consumer<AppInfo>(
+          builder: (context, appInfo, child) {
+            return ListView.separated(
+              itemBuilder: (context, i) {
+                return Card(
+                  color: darkTheme ? Colors.black : Colors.grey[100],
+                  shadowColor: Colors.transparent,
+                  child: HistoryDesignUIWidget(
+                    tripsHistoryModel: appInfo.allTripsHistoryInformationList[i],
+                  ),
+                );
+              },
+              separatorBuilder: (context, i) => SizedBox(height: 30),
+              itemCount: appInfo.allTripsHistoryInformationList.length,
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
             );
-          },
-          separatorBuilder: (context, i) => SizedBox(height: 30),
-          itemCount:
-              Provider.of<AppInfo>(
-                context,
-                listen: false,
-              ).allTripsHistoryInformationList.length,
-          physics: ClampingScrollPhysics(),
-          shrinkWrap: true,
+          }
         ),
       ),
     );

@@ -446,6 +446,7 @@ class _MainScreenState extends State<MainScreen> {
       "originAddress": originLocation.locationName,
       "destinationAddress": destinationLocation.locationName,
       "driverId": "waiting",
+      "userId":userModelCurrentInfo!.id,
     };
     referenceRideRequest!.set(userInformationMap);
     tripRideRequestsInfoStreamSubscription = referenceRideRequest!.onValue
@@ -453,10 +454,28 @@ class _MainScreenState extends State<MainScreen> {
           if (eventSnap.snapshot.value == null) {
             return;
           }
-          if ((eventSnap.snapshot.value as Map)["cart_details"] != null) {
+          if ((eventSnap.snapshot.value as Map)["carModel"] != null) {
             setState(() {
-              driverCartDetails =
-                  (eventSnap.snapshot.value as Map)["cart_details"].toString();
+              driverCartDetailsModel =
+                  (eventSnap.snapshot.value as Map)["carModel"].toString();
+            });
+          }
+          if ((eventSnap.snapshot.value as Map)["carColor"] != null) {
+            setState(() {
+              driverCartDetailsColor =
+                  (eventSnap.snapshot.value as Map)["carColor"].toString();
+            });
+          }
+          if ((eventSnap.snapshot.value as Map)["carType"] != null) {
+            setState(() {
+              driverCartDetailsType =
+                  (eventSnap.snapshot.value as Map)["carType"].toString();
+            });
+          }
+          if ((eventSnap.snapshot.value as Map)["carNumber"] != null) {
+            setState(() {
+              driverCartDetailsNumber=
+                  (eventSnap.snapshot.value as Map)["carNumber"].toString();
             });
           }
           if ((eventSnap.snapshot.value as Map)["driverName"] != null) {
@@ -637,10 +656,6 @@ class _MainScreenState extends State<MainScreen> {
         userPickUpPosition,
       );
 
-      if (directionDetailsWithPolyline == null) {
-        return;
-      }
-
       setState(() {
         // Use duration_text_in_s if you want to show distance
         driverRideStatus =
@@ -671,10 +686,6 @@ class _MainScreenState extends State<MainScreen> {
         driverCurrentPositionLatLng,
         userDestinationPosition,
       );
-
-      if (directionDetailsInfo == null) {
-        return;
-      }
 
       setState(() {
         driverRideStatus =
@@ -979,7 +990,7 @@ class _MainScreenState extends State<MainScreen> {
                                 // Prevents overflow
                                 constraints: BoxConstraints(maxWidth: 100),
                                 child: Text(
-                                  driverCartDetails,
+                                  "$driverCartDetailsType - $driverCartDetailsNumber - $driverCartDetailsColor - $driverCartDetailsModel",
                                   style: TextStyle(fontSize: 15),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -1186,8 +1197,7 @@ class _MainScreenState extends State<MainScreen> {
                             showSearchingForDriverContainerHeight = 0;
                             SuggestedRidesContainerHeight = 0;
                             bottomPaddingOfMap = 200;
-                            searchLocationContainerHeight =
-                                220; // Restore search container
+                            searchLocationContainerHeight = 220; // Restore search container
                           });
                         },
                         child: Container(

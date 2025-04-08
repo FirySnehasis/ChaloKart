@@ -11,7 +11,10 @@ UserModel? userModelCurrentInfo;
 String userDropOffAddress = "";
 
 DirectionDetailsWithPolyline? tripDirectionDetailsInfo;
-String driverCartDetails = "";
+String driverCartDetailsModel = "";
+String driverCartDetailsNumber = "";
+String driverCartDetailsType = "";
+String driverCartDetailsColor = "";
 String driverName = "";
 String driverPhone = "";
 String driverRatings = "";

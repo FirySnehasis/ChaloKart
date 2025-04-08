@@ -12,30 +12,34 @@ class HistoryDesignUIWidget extends StatefulWidget {
 }
 
 class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
-  String formatDateAndTime(String dateTimeFromDB) {
-    DateTime dateTime = DateTime.parse(dateTimeFromDB);
-    String formattedDateTime =
-        "${DateFormat.MMMd().format(dateTime)}, ${DateFormat.y().format(dateTime)} - ${DateFormat.jm().format(dateTime)}";
-    return formattedDateTime;
+  String formatDateAndTime(String? dateTimeFromDB) {
+    if (dateTimeFromDB == null) return "No date available";
+    try {
+      DateTime dateTime = DateTime.parse(dateTimeFromDB);
+      String formattedDateTime =
+          "${DateFormat.MMMd().format(dateTime)}, ${DateFormat.y().format(dateTime)} - ${DateFormat.jm().format(dateTime)}";
+      return formattedDateTime;
+    } catch (e) {
+      return "Invalid date format";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
     bool darkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(formatDateAndTime(widget.tripsHistoryModel!.time!),
+        Text(
+          formatDateAndTime(widget.tripsHistoryModel?.time),
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
 
-
-        SizedBox(height: 10,),
+        SizedBox(height: 10),
 
         Container(
           decoration: BoxDecoration(
@@ -62,18 +66,19 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                         ),
                       ),
 
-                      SizedBox(width: 15,),
+                      SizedBox(width: 15),
 
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.tripsHistoryModel!.driverName!,
+                          Text(
+                            widget.tripsHistoryModel?.driverName ?? "Unknown Driver",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
 
-                          SizedBox(height: 8,),
+                          SizedBox(height: 8),
 
                           Row(
                             children: [
@@ -81,9 +86,9 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                                 Icons.star,
                                 color: Colors.blue,
                               ),
-                              SizedBox(width: 5,),
+                              SizedBox(width: 5),
                               Text(
-                                "4.5", // Replace with widget.tripsHistoryModel!.ratings if dynamic
+                                widget.tripsHistoryModel?.ratings ?? "0.0",
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),
@@ -104,16 +109,15 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                           color: Colors.grey,
                         ),
                       ),
-                      SizedBox(height: 8,),
+                      SizedBox(height: 8),
                       Text(
-                        " ₹${widget.tripsHistoryModel!.fareAmount!}",
+                        " ₹${widget.tripsHistoryModel?.fareAmount ?? "0.0"}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,27 +128,26 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                           color: Colors.grey,
                         ),
                       ),
-                      SizedBox(height: 8,),
+                      SizedBox(height: 8),
                       Text(
-                        " ₹${widget.tripsHistoryModel!.status!}",
+                        widget.tripsHistoryModel?.status ?? "Unknown",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-
                 ],
               ),
 
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
 
               Divider(
                 thickness: 3,
                 color: Colors.grey[200],
               ),
 
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
 
               Row(
                 children: [
@@ -157,7 +160,7 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                 ],
               ),
 
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,27 +175,25 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                         ),
                         child: Icon(
                           Icons.star,
-                          color: Colors.white,),
+                          color: Colors.white,
+                        ),
                       ),
-
 
                       SizedBox(width: 15),
 
-                      Text("${(widget.tripsHistoryModel!.originAddress!).substring(0, 15)} ...",
+                      Text(
+                        "${(widget.tripsHistoryModel?.originAddress ?? "Unknown Origin").substring(0, (widget.tripsHistoryModel?.originAddress?.length ?? 0) > 15 ? 15 : (widget.tripsHistoryModel?.originAddress?.length ?? 0))} ...",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-
-
                     ],
                   ),
-                  // Add more children here as needed
                 ],
               ),
 
-              SizedBox(height:10,),
+              SizedBox(height: 10),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,27 +208,23 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                         ),
                         child: Icon(
                           Icons.star,
-                          color: Colors.white,),
+                          color: Colors.white,
+                        ),
                       ),
-
 
                       SizedBox(width: 15),
 
-                      Text("${widget.tripsHistoryModel!.destinationAddress!}",
+                      Text(
+                        widget.tripsHistoryModel?.destinationAddress ?? "Unknown Destination",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-
-
                     ],
                   ),
-                  // Add more children here as needed
                 ],
               ),
-
-
             ],
           ),
         )

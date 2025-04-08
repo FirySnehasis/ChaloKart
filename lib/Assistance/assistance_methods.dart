@@ -30,10 +30,7 @@ class AssistantMethods {
     });
   }
 
-  static Future<String> searchAddressForGeoCoordinates(
-    Position position,
-    context,
-  ) async {
+  static Future<String> searchAddressForGeoCoordinates(Position position, context,) async {
     String apiUrl =
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$mapKey";
     String humanReadableAddress = "";
@@ -55,11 +52,7 @@ class AssistantMethods {
     return humanReadableAddress;
   }
 
-  static Future<(DirectionDetailsWithPolyline, dynamic)>
-  obtainOriginToDestinationDirectionDetails(
-    LatLng originPosition,
-    LatLng destinationPosition,
-  ) async {
+  static Future<(DirectionDetailsWithPolyline, dynamic)> obtainOriginToDestinationDirectionDetails(LatLng originPosition, LatLng destinationPosition,) async {
     DirectionDetailsWithPolyline directionDetailsWithPolyline =
         DirectionDetailsWithPolyline();
     // print("Function called");
@@ -91,9 +84,7 @@ class AssistantMethods {
     );
   }
 
-  static double calculateFareAmountFromOriginToDestination(
-    DirectionDetailsWithPolyline directionDetailsWithPolyline,
-  ) {
+  static double calculateFareAmountFromOriginToDestination(DirectionDetailsWithPolyline directionDetailsWithPolyline,) {
     double timeTravelledFareAmountPerMinute =
         (directionDetailsWithPolyline.distance_value_in_meters! / 60) * 0.1;
     double distanceTravelledFareAmountPerKilometer =
@@ -104,11 +95,7 @@ class AssistantMethods {
     return double.parse(totalFareAmount.toStringAsFixed(1));
   }
 
-  static Future<void> sendNotificationToDriverNow(
-    String? driverToken,
-    String? rideRequestId,
-    BuildContext context,
-  ) async {
+  static Future<void> sendNotificationToDriverNow(String? driverToken, String? rideRequestId, BuildContext context,) async {
     if (driverToken == null || rideRequestId == null) {
       print("Driver token or ride request ID is null");
       return;
@@ -139,7 +126,7 @@ class AssistantMethods {
 
       // Using the FCM API v1 endpoint
       var response = await http.post(
-        Uri.parse("https://fcm.googleapis.com/v1/projects/chalo-kart/messages:send"),
+        Uri.parse("https://fcm.googleapis.com/v1/projects/chalokart-83ef4/messages:send"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $cloudMessagingServerToken",
@@ -167,8 +154,8 @@ class AssistantMethods {
     FirebaseDatabase.instance
         .ref()
         .child("All Ride Requests")
-        .orderByChild("userName")
-        .equalTo(userModelCurrentInfo!.name)
+        .orderByChild("userId")
+        .equalTo(userModelCurrentInfo!.id)
         .once()
         .then((snap) {
           if (snap.snapshot.value != null) {
@@ -186,8 +173,9 @@ class AssistantMethods {
               context,
               listen: false,
             ).updateOverAllTripsKeys(tripKeysList);
-
-            readTripsKeysForOnlineUser(context);
+            
+            // Read trip history information after getting the keys
+            readTripsHistoryInformation(context);
           }
         });
   }
