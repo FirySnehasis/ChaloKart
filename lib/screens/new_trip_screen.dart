@@ -334,13 +334,19 @@ class _NewTripScreenState extends State<NewTripScreen> {
     // }
 
     if(databaseReference.child("driverId")!="waiting"){
+      Map<String, String> driverCarInfoMap = {
+        "car_model": onlineDriverData.carModel!,
+        "car_number": onlineDriverData.carNumber!,
+        "car_color": onlineDriverData.carColor!,
+        "car_type": onlineDriverData.carType!,
+      };
       databaseReference.child("driverLocation").set(driverLocationDataMap);
       databaseReference.child("status").set("accepted");
       databaseReference.child("driverId").set(onlineDriverData.id);
       databaseReference.child("driverName").set(onlineDriverData.name);
       databaseReference.child("driverPhone").set(onlineDriverData.phone);
       databaseReference.child("ratings").set(onlineDriverData.ratings);
-      databaseReference.child("car_details").set("${onlineDriverData.carModel} ${onlineDriverData.carNumber} (${onlineDriverData.carColor})");
+      databaseReference.child("car_details").set(driverCarInfoMap);
       saveRideRequestIdToDriverHistory();
 
     }
@@ -680,6 +686,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                         children: [
                           Text(
                             widget.userRideRequestDetails.userName!,
+
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,

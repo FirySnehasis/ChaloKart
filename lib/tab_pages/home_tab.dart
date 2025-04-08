@@ -89,11 +89,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
         onlineDriverData.phone = (snap.snapshot.value as Map)["phone"];
         onlineDriverData.email = (snap.snapshot.value as Map)["email"];
         onlineDriverData.ratings=(snap.snapshot.value as Map)["ratings"];
-        onlineDriverData.carType = (snap.snapshot.value as Map)["car_type"];
-        onlineDriverData.carModel = (snap.snapshot.value as Map)["car_model"];
-        onlineDriverData.carNumber = (snap.snapshot.value as Map)["car_number"];
-        onlineDriverData.carColor = (snap.snapshot.value as Map)["car_color"];
-        onlineDriverData.ratings= (snap.snapshot.value as Map)["ratings"];
+        onlineDriverData.carType = (snap.snapshot.value as Map)["car_details"]["car_type"];
+        onlineDriverData.carModel = (snap.snapshot.value as Map)["car_details"]["car_model"];
+        onlineDriverData.carNumber = (snap.snapshot.value as Map)["car_details"]["car_number"];
+        onlineDriverData.carColor = (snap.snapshot.value as Map)["car_details"]["car_color"];
+        onlineDriverData.earnings= (snap.snapshot.value as Map)["earnings"];
+        onlineDriverData.totalRides= (snap.snapshot.value as Map)["total_rides"];
       }
     });
     AssistantMethods.readDriverRatings(context);

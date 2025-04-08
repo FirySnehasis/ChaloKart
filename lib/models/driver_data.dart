@@ -8,7 +8,8 @@ class DriverData{
   String? carModel;
   String? carNumber;
   String? carColor;
-
+  String? earnings;
+  String? totalRides;
 
 DriverData({
   this.id,
@@ -20,5 +21,7 @@ DriverData({
   this.carModel,
   this.carNumber,
   this.carColor,
+  this.earnings,
+  this.totalRides,
   });
 }

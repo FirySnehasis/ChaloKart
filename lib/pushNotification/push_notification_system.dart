@@ -185,7 +185,7 @@ class PushNotificationSystem {
             userRideRequestDetails.rideRequestId=rideRequestId;
 
             showDialog(
-              context: context,
+              context:context,
               builder: (BuildContext context) => NotificationDialogBox(
                 userRideRequestDetails: userRideRequestDetails,
               ),
