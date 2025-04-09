@@ -22,3 +22,4 @@ double countRatingStars = 0.0;
 String titleStarsRating = "";
 String cloudMessagingServerToken = "";
 List driversList = [];
+double FareAmountCalculated = 0;

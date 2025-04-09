@@ -447,6 +447,7 @@ class _MainScreenState extends State<MainScreen> {
       "destinationAddress": destinationLocation.locationName,
       "driverId": "waiting",
       "userId":userModelCurrentInfo!.id,
+      "fareAmount":FareAmountCalculated,
     };
     referenceRideRequest!.set(userInformationMap);
     tripRideRequestsInfoStreamSubscription = referenceRideRequest!.onValue
@@ -543,7 +544,7 @@ class _MainScreenState extends State<MainScreen> {
                   barrierDismissible: false,
                   builder:
                       (BuildContext context) =>
-                          payFareAmountDialog(fareAmount: fareAmount),
+                          payFareAmountDialog(fareAmount: FareAmountCalculated),
                 ).then((response) {
                   if (response == "Cash Paid") {
                     //user can rate the driver now

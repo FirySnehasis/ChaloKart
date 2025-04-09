@@ -92,6 +92,7 @@ class AssistantMethods {
     double totalFareAmount =
         timeTravelledFareAmountPerMinute +
         distanceTravelledFareAmountPerKilometer;
+    FareAmountCalculated = double.parse(totalFareAmount.toStringAsFixed(1));
     return double.parse(totalFareAmount.toStringAsFixed(1));
   }
 

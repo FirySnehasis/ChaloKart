@@ -1,3 +1,4 @@
+import 'package:chalo_kart_user/global/global.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/splash_screen.dart';
@@ -63,7 +64,13 @@ class _PayFareAmountDialogState extends State<PayFareAmountDialog> {
                 ),
                 onPressed: () {
                   Future.delayed(Duration(seconds: 1000), () {
-                    Navigator.pop(context, "Cash Paid");
+                    userModelCurrentInfo!.wallet_amount =
+                        ((double.parse(
+                                  userModelCurrentInfo!.wallet_amount ?? "0",
+                                )) -
+                                FareAmountCalculated)
+                            .toString();
+                    Navigator.pop(context, "Amount Deducted from Wallet");
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (c) => SplashScreen()),
