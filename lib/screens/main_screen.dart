@@ -1792,6 +1792,17 @@ class _MainScreenState extends State<MainScreen> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () async {
+                            // check if the user has money in the wallet
+                            if (double.parse(
+                                  userModelCurrentInfo?.wallet_amount ?? '0',
+                                ) <
+                                fareAmountCalculated) {
+                              Fluttertoast.showToast(
+                                msg:
+                                    "You don't have enough balance in your wallet.",
+                              );
+                              return;
+                            }
                             if (selectedVehicleType != "") {
                               cloudMessagingServerToken =
                                   await GetServiceKey().getServerKeyToken();
