@@ -84,8 +84,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     "name": nameTextEditingController.text.trim(),
                   });
 
+                  // Fixed: Changed from != (comparison) to = (assignment)
+                  userModelCurrentInfo!.name = nameTextEditingController.text.trim();
+
                   if (!mounted) return;
                   Navigator.pop(context);
+
+                  // Added: Force UI to rebuild with updated name
+                  setState(() {});
+
                   Fluttertoast.showToast(msg: "Name updated successfully");
                 } catch (error) {
                   Fluttertoast.showToast(msg: "Error updating name: $error");
@@ -104,18 +111,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               child:
-                  _isLoading
-                      ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
-                        ),
-                      )
-                      : Text("Update"),
+              _isLoading
+                  ? SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white,
+                  ),
+                ),
+              )
+                  : Text("Update"),
             ),
           ],
         );

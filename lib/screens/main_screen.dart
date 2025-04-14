@@ -27,6 +27,7 @@ import '../Assistance/geofire.assistent.dart';
 import '../models/active_nearby_available_drivers.dart';
 import '../models/direction_details_info.dart';
 import '../models/direction.dart';
+import '../widgets/pay_fare_amount_dialog.dart';
 import '../widgets/progress_dialog.dart';
 
 Future<void> _makePhoneCall(String url) async {
@@ -422,6 +423,9 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   saveRideRequestInformation(String selectedVehicleType) {
+    if(selectedVehicleType=="12-seater Cart"){
+      fareAmountCalculated=fareAmountCalculated+20;
+    }
     //1.Save the ride information
     referenceRideRequest =
         FirebaseDatabase.instance.ref().child("All Ride Requests").push();
@@ -447,7 +451,7 @@ class _MainScreenState extends State<MainScreen> {
       "destinationAddress": destinationLocation.locationName,
       "driverId": "waiting",
       "userId":userModelCurrentInfo!.id,
-      "fareAmount":FareAmountCalculated,
+      "fareAmount":fareAmountCalculated.toStringAsFixed(0),
     };
     referenceRideRequest!.set(userInformationMap);
     tripRideRequestsInfoStreamSubscription = referenceRideRequest!.onValue
@@ -455,28 +459,29 @@ class _MainScreenState extends State<MainScreen> {
           if (eventSnap.snapshot.value == null) {
             return;
           }
-          if ((eventSnap.snapshot.value as Map)["carModel"] != null) {
+          if((eventSnap.snapshot.value as Map)["car_details"]==null)return;
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_model"] != null) {
             setState(() {
               driverCartDetailsModel =
-                  (eventSnap.snapshot.value as Map)["carModel"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_model"].toString();
             });
           }
-          if ((eventSnap.snapshot.value as Map)["carColor"] != null) {
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_color"] != null) {
             setState(() {
               driverCartDetailsColor =
-                  (eventSnap.snapshot.value as Map)["carColor"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_color"].toString();
             });
           }
-          if ((eventSnap.snapshot.value as Map)["carType"] != null) {
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_number"] != null) {
+            setState(() {
+              driverCartDetailsNumber =
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_number"].toString();
+            });
+          }
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_type"] != null) {
             setState(() {
               driverCartDetailsType =
-                  (eventSnap.snapshot.value as Map)["carType"].toString();
-            });
-          }
-          if ((eventSnap.snapshot.value as Map)["carNumber"] != null) {
-            setState(() {
-              driverCartDetailsNumber=
-                  (eventSnap.snapshot.value as Map)["carNumber"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_type"].toString();
             });
           }
           if ((eventSnap.snapshot.value as Map)["driverName"] != null) {
@@ -544,7 +549,7 @@ class _MainScreenState extends State<MainScreen> {
                   barrierDismissible: false,
                   builder:
                       (BuildContext context) =>
-                          payFareAmountDialog(fareAmount: FareAmountCalculated),
+                          PayFareAmountDialog(fareAmount: fareAmountCalculated.truncateToDouble()),
                 ).then((response) {
                   if (response == "Cash Paid") {
                     //user can rate the driver now
@@ -727,75 +732,7 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Widget payFareAmountDialog({required double fareAmount}) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      backgroundColor: Colors.transparent,
-      child: Container(
-        margin: EdgeInsets.all(8),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              "Fare Amount",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "₹$fareAmount",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Text(
-                "This is the total trip fare amount",
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.all(18),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, "Cash Paid");
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Pay Cash",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "₹$fareAmount",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 4),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   @override
   void initState() {
@@ -1471,6 +1408,7 @@ class _MainScreenState extends State<MainScreen> {
                                         listen: false,
                                       ).userDropOffLocation !=
                                       null) {
+                                    fareAmountCalculated=AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!);
                                     showSuggestedRidesContainer();
                                   } else {
                                     Fluttertoast.showToast(
@@ -1661,7 +1599,7 @@ class _MainScreenState extends State<MainScreen> {
                                     SizedBox(height: 6),
                                     Text(
                                       tripDirectionDetailsInfo != null
-                                          ? "Rs ${((AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) * 2) * 107).toStringAsFixed(1)}"
+                                          ? "Rs ${(fareAmountCalculated).toStringAsFixed(1)}"
                                           : "Calculating...",
                                       style: TextStyle(
                                         color:
@@ -1679,6 +1617,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
+
                               setState(() {
                                 selectedVehicleType = "12-seater Cart";
                               });
@@ -1744,7 +1683,7 @@ class _MainScreenState extends State<MainScreen> {
                                     SizedBox(height: 6),
                                     Text(
                                       tripDirectionDetailsInfo != null
-                                          ? "Rs ${((AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) * 1.5) * 107).toStringAsFixed(1)}"
+                                          ? "Rs ${((fareAmountCalculated +20)).toStringAsFixed(1)}"
                                           : "Calculating...",
                                       style: TextStyle(
                                         color:

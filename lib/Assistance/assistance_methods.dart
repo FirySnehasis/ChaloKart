@@ -84,16 +84,21 @@ class AssistantMethods {
     );
   }
 
-  static double calculateFareAmountFromOriginToDestination(DirectionDetailsWithPolyline directionDetailsWithPolyline,) {
+  static double calculateFareAmountFromOriginToDestination(DirectionDetailsWithPolyline directionDetailsWithPolyline) {
+    String timeString = directionDetailsWithPolyline.duration_text_in_s!;
+    String numericPart = RegExp(r'\d+').firstMatch(timeString)?.group(0) ?? "0";
+    int seconds = int.parse(numericPart);
     double timeTravelledFareAmountPerMinute =
-        (directionDetailsWithPolyline.distance_value_in_meters! / 60) * 0.1;
+        (seconds/ 60) * 0.1;
     double distanceTravelledFareAmountPerKilometer =
-        (directionDetailsWithPolyline.distance_value_in_meters! / 1000) * 0.1;
+        (directionDetailsWithPolyline.distance_value_in_meters! / 100) * 1;
     double totalFareAmount =
         timeTravelledFareAmountPerMinute +
-        distanceTravelledFareAmountPerKilometer;
-    FareAmountCalculated = double.parse(totalFareAmount.toStringAsFixed(1));
-    return double.parse(totalFareAmount.toStringAsFixed(1));
+            distanceTravelledFareAmountPerKilometer;
+    // String formattedFare = totalFareAmount.toStringAsFixed(1);
+    fareAmountCalculated = totalFareAmount;
+    fareAmountCalculated=fareAmountCalculated.truncateToDouble();
+    return fareAmountCalculated;
   }
 
   static Future<void> sendNotificationToDriverNow(String? driverToken, String? rideRequestId, BuildContext context,) async {

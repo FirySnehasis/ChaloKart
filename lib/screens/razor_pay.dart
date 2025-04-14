@@ -23,10 +23,10 @@ class _RazorPayState extends State<RazorPay> {
     var options = {
       'key': 'rzp_test_1DP5mmOlF5G5ag',
       'amount': amount,
-      'name': 'Divyam',
+      'name': 'ChaloKart',
       'prefill': {
         'contact': '8888888888',
-        'email': 'william.johnson@example-pet-store.com',
+        'email': 'eegotlatent@gmail.com',
       },
       'external': {
         'wallets': ['paytm'],
