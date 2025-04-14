@@ -83,26 +83,37 @@ class AssistantMethods {
     streamSubscriptionPosition!.pause();
     Geofire.removeLocation(currentUser!.uid);
   }
-  static double calculateFareAmountFromOriginToDestination((DirectionDetailsWithPolyline, dynamic) directionDetails) {
-    double timeTravelledFareAmountPerMinute = (double.parse(directionDetails.$1.duration_text_in_s!) / 60) * 0.1;
-    double distanceTravelledFareAmountPerKilometer = (directionDetails.$1.distance_value_in_meters! / 1000) * 0.1;
-    double totalFareAmount = timeTravelledFareAmountPerMinute + distanceTravelledFareAmountPerKilometer;
-    double localCurrencyTotalFare = totalFareAmount * 107;
+  // static double calculateFareAmountFromOriginToDestination((DirectionDetailsWithPolyline, dynamic) directionDetails) {
+  //   double timeTravelledFareAmountPerMinute = (double.parse(directionDetails.$1.duration_text_in_s!) / 60) * 0.1;
+  //   double distanceTravelledFareAmountPerKilometer = (directionDetails.$1.distance_value_in_meters! / 1000) * 0.1;
+  //   double totalFareAmount = timeTravelledFareAmountPerMinute + distanceTravelledFareAmountPerKilometer;
+  //   double localCurrencyTotalFare = totalFareAmount * 107;
+  //
+  //   // Default value if no car type data available
+  //   String carType = onlineDriverData.carType ?? "standard";
+  //
+  //   if(carType == "6-seater Cart"){
+  //     double resultFareAmount = (localCurrencyTotalFare.truncate()) * 2;
+  //     return resultFareAmount;
+  //   }
+  //   else if(carType=="12-seater Cart"){
+  //     double resultFareAmount = (localCurrencyTotalFare.truncate()) * 2;
+  //     return resultFareAmount;
+  //   }
+  //
+  //   return localCurrencyTotalFare.truncate().toDouble();
+  // }
 
-    // Default value if no car type data available
-    String carType = onlineDriverData.carType ?? "standard";
-
-    if(carType == "6-seater Cart"){
-      double resultFareAmount = (localCurrencyTotalFare.truncate()) * 2;
-      return resultFareAmount;
-    }
-    else if(carType=="12-seater Cart"){
-      double resultFareAmount = (localCurrencyTotalFare.truncate()) * 2;
-      return resultFareAmount;
-    }
-
-    return localCurrencyTotalFare.truncate().toDouble();
-  }
+  // static double calculateFareAmountFromOriginToDestination(DirectionDetailsWithPolyline directionDetailsWithPolyline,) {
+  //   double timeTravelledFareAmountPerMinute =
+  //       (directionDetailsWithPolyline.distance_value_in_meters! / 60) * 0.1;
+  //   double distanceTravelledFareAmountPerKilometer =
+  //       (directionDetailsWithPolyline.distance_value_in_meters! / 1000) * 0.1;
+  //   double totalFareAmount =
+  //       timeTravelledFareAmountPerMinute +
+  //           distanceTravelledFareAmountPerKilometer;
+  //   return double.parse(totalFareAmount.toStringAsFixed(1));
+  // }
 
   static void readTripsKeysForOnlineDriver(context){
     FirebaseDatabase.instance.ref().child("All Ride Requests").orderByChild("driverId").equalTo(firebaseAuth.currentUser!.uid).once().then((snap){

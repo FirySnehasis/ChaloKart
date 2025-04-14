@@ -181,6 +181,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
   void initState() {
     super.initState();
     try {
+      fetchFareAmount();
       saveAssignedDriverDetailsToUserRideRequest();
       
       // Set initial ride request status from database
@@ -308,7 +309,25 @@ class _NewTripScreenState extends State<NewTripScreen> {
       });
     }
   }
-  
+  Future<void> fetchFareAmount() async {
+    try {
+      DatabaseEvent event = await FirebaseDatabase.instance.ref()
+          .child("All Ride Requests")
+          .child(widget.userRideRequestDetails.rideRequestId!)
+          .child("fareAmount")
+          .once();
+
+      if (event.snapshot.value != null) {
+        setState(() {
+          fareAmountString = event.snapshot.value.toString();
+          // If you need the double value as well:
+          totalFareAmount = double.tryParse(fareAmountString) ?? 0;
+        });
+      }
+    } catch (error) {
+      print("Error fetching fare amount: $error");
+    }
+  }
   void saveAssignedDriverDetailsToUserRideRequest() {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref().child("All Ride Requests")
         .child(widget.userRideRequestDetails.rideRequestId!);
@@ -424,13 +443,30 @@ class _NewTripScreenState extends State<NewTripScreen> {
       //   showFareDialog(defaultFare);
       //   return;
       // }
-      
-      double totalFareAmount = AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetails);
-      FirebaseDatabase.instance.ref().child("All Ride Requests").child(widget.userRideRequestDetails.rideRequestId!).child("fareAmount").set(totalFareAmount.toString());
+
+      // double totalFareAmount = AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetails);
+      // String? fareAmountString="";
+      // double totalFareAmount = 0;
+      // // FirebaseDatabase.instance.ref().child("All Ride Requests").child(widget.userRideRequestDetails.rideRequestId!).child("fareAmount").set(totalFareAmount.toString());
+      // FirebaseDatabase.instance.ref()
+      //     .child("All Ride Requests")
+      //     .child(widget.userRideRequestDetails.rideRequestId!)
+      //     .child("fareAmount")
+      //     .once()
+      //     .then((DatabaseEvent event) {
+      //   if (event.snapshot.value != null) {
+      //     fareAmountString = event.snapshot.value.toString();
+      //     // fareAmountString=event.snapshot.value as String?;
+      //   }
+      //   else{
+      //     fareAmountString="0";
+      //   }
+      // });
+
       FirebaseDatabase.instance.ref().child("All Ride Requests").child(widget.userRideRequestDetails.rideRequestId!).child("status").set("ended");
 
       // Update the ride status and fare amount in the database
-      updateRideStatus("ended", totalFareAmount);
+      updateRideStatus("ended");
       
       // Show fare amount dialog
       showFareDialog(totalFareAmount);
@@ -448,20 +484,20 @@ class _NewTripScreenState extends State<NewTripScreen> {
       Fluttertoast.showToast(msg: "Something went wrong. Using default fare.");
       
       // Use a default fare in case of errors
-      double defaultFare = 150.0;
-      updateRideStatus("ended", defaultFare);
+      double defaultFare = 15;
+      updateRideStatus("ended");
       showFareDialog(defaultFare);
     }
   }
   
   // Helper methods to make the code more modular
-  void updateRideStatus(String status, double fareAmount) {
-    FirebaseDatabase.instance
-        .ref()
-        .child("All Ride Requests")
-        .child(widget.userRideRequestDetails.rideRequestId!)
-        .child("fareAmount")
-        .set(fareAmount.toString());
+  void updateRideStatus(String status) {
+    // FirebaseDatabase.instance
+    //     .ref()
+    //     .child("All Ride Requests")
+    //     .child(widget.userRideRequestDetails.rideRequestId!)
+    //     .child("fareAmount")
+    //     .set(fareAmount.toString());
         
     FirebaseDatabase.instance
         .ref()

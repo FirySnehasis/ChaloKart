@@ -50,3 +50,5 @@ Position? driverCurrentPosition;
 DriverData onlineDriverData=DriverData();
 String titleStarsRating="";
 
+String fareAmountString = "0"; // Default value
+double totalFareAmount = 0;
