@@ -366,6 +366,8 @@ class _NewTripScreenState extends State<NewTripScreen> {
       databaseReference.child("driverPhone").set(onlineDriverData.phone);
       databaseReference.child("ratings").set(onlineDriverData.ratings);
       databaseReference.child("car_details").set(driverCarInfoMap);
+      databaseReference.child("total_rides").set(onlineDriverData.totalRides);
+
       saveRideRequestIdToDriverHistory();
 
     }
@@ -473,6 +475,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
       
       // Save fare amount to driver's earnings
       saveFareAmountToDriverEarnings(totalFareAmount);
+      onlineDriverData.totalRides!=(int.parse(onlineDriverData.totalRides!)+1).toString();
       
     } catch (e) {
       // Make sure to dismiss the progress dialog if there's an error
@@ -522,11 +525,14 @@ class _NewTripScreenState extends State<NewTripScreen> {
       if(snap.snapshot.value != null){
         double oldEarnings= double.parse(snap.snapshot.value.toString());
         double driverTotalEarnings= totalFareAmount + oldEarnings;
+        onlineDriverData.earnings = driverTotalEarnings.toString();
         FirebaseDatabase.instance.ref().child("drivers").child(firebaseAuth.currentUser!.uid).child("earnings").set(driverTotalEarnings.toString());
       }
       else{
         FirebaseDatabase.instance.ref().child("drivers").child(firebaseAuth.currentUser!.uid).child("earnings").set(totalFareAmount.toString());
+        onlineDriverData.earnings = totalFareAmount.toString();
       }
+
     });
   }
 

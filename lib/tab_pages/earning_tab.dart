@@ -14,29 +14,29 @@ class EarningTabPage extends StatefulWidget {
 }
 
 class _EarningTabPageState extends State<EarningTabPage> {
-  // String earnings = "0";
+  String earnings = "0";
   
   @override
   void initState() {
     super.initState();
-    // getDriverEarnings();
+    getDriverEarnings();
   }
   
-  // void getDriverEarnings() async {
-  //   DatabaseReference earningsRef = FirebaseDatabase.instance
-  //       .ref()
-  //       .child("drivers")
-  //       .child(firebaseAuth.currentUser!.uid)
-  //       .child("earnings");
-  //
-  //   earningsRef.once().then((snap) {
-  //     if(snap.snapshot.value != null) {
-  //       setState(() {
-  //         earnings = snap.snapshot.value.toString();
-  //       });
-  //     }
-  //   });
-  // }
+  void getDriverEarnings() async {
+    DatabaseReference earningsRef = FirebaseDatabase.instance
+        .ref()
+        .child("drivers")
+        .child(firebaseAuth.currentUser!.uid)
+        .child("earnings");
+
+    earningsRef.once().then((snap) {
+      if(snap.snapshot.value != null) {
+        setState(() {
+          earnings = snap.snapshot.value.toString();
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,8 @@ class _EarningTabPageState extends State<EarningTabPage> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  " ₹${Provider.of<AppInfo>(context,listen: false).driverTotalEarnings}",
+                  // " ₹${Provider.of<AppInfo>(context,listen: false).driverTotalEarnings}",
+                  " ₹$earnings",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 40,
@@ -95,83 +96,10 @@ class _EarningTabPageState extends State<EarningTabPage> {
               ],
             ),
           ),
-          
-          // Stats section
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Statistics",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                SizedBox(height: 15),
-                _buildStatCard(Icons.add_road, "Total Trips", "0"),
-                SizedBox(height: 10),
-                _buildStatCard(Icons.star, "Rating", "5.0"),
-                SizedBox(height: 10),
-                _buildStatCard(Icons.handshake, "Completed Trips", "0"),
-              ],
-            ),
-          ),
+
         ],
       ),
     );
   }
-  
-  Widget _buildStatCard(IconData icon, String title, String value) {
-    return Container(
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 5,
-            spreadRadius: 1,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xFFE8F8F3),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              color: Color(0xFF4CE5B1),
-              size: 22,
-            ),
-          ),
-          SizedBox(width: 15),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[700],
-            ),
-          ),
-          Spacer(),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+
 }

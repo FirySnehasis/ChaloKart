@@ -354,6 +354,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               "name":_nameController.text.trim(),
               "email":_emailController.text.trim(),
               "phone":_mobileController.text.trim(),
+              "earnings":"0",
+              "total_rides":"0",
+              "ratings":"0",
             };
 
             DatabaseReference userRef =FirebaseDatabase.instance.ref().child("drivers");

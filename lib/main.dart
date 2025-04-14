@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AppInfo(),
       child: MaterialApp(
-        title: 'ChaloKArt Driver',
+        title: 'ChaloKart Driver',
         themeMode: ThemeMode.system,
         theme: MyThemes.lightTheme,
         darkTheme: MyThemes.darkTheme,
