@@ -743,6 +743,12 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  String truncate(String text, int maxLength) {
+    return text.length <= maxLength
+        ? text
+        : '${text.substring(0, maxLength)}...';
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -1280,7 +1286,12 @@ class _MainScreenState extends State<MainScreen> {
                                                       context,
                                                     ).userPickupLocation !=
                                                     null
-                                                ? '${Provider.of<AppInfo>(context).userPickupLocation!.locationName!.substring(0, 15)}...'
+                                                ? truncate(
+                                                  Provider.of<AppInfo>(context)
+                                                      .userPickupLocation!
+                                                      .locationName!,
+                                                  15,
+                                                )
                                                 : 'Add Pickup Location',
                                             style: TextStyle(
                                               color: Colors.grey,
@@ -1499,10 +1510,12 @@ class _MainScreenState extends State<MainScreen> {
                           Text(
                             Provider.of<AppInfo>(context).userPickupLocation !=
                                     null
-                                ? Provider.of<AppInfo>(context)
-                                    .userPickupLocation!
-                                    .locationName!
-                                    .substring(0, 30)
+                                ? truncate(
+                                  Provider.of<AppInfo>(
+                                    context,
+                                  ).userPickupLocation!.locationName!,
+                                  20,
+                                )
                                 : 'Not Getting Address',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -1526,7 +1539,12 @@ class _MainScreenState extends State<MainScreen> {
                           Text(
                             Provider.of<AppInfo>(context).userDropOffLocation !=
                                     null
-                                ? '${Provider.of<AppInfo>(context).userDropOffLocation!.locationName!.substring(0, 10)}..'
+                                ? truncate(
+                                  Provider.of<AppInfo>(
+                                    context,
+                                  ).userDropOffLocation!.locationName!,
+                                  15,
+                                )
                                 : 'Where to',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

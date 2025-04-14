@@ -89,6 +89,14 @@ class _PrecisePickupScreenState extends State<PrecisePickupScreen> {
     }
   }
 
+  String truncate(String text, int length) {
+    if (text.length <= length) {
+      return text;
+    } else {
+      return '${text.substring(0, length)}...';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool darkTheme =
@@ -185,7 +193,12 @@ class _PrecisePickupScreenState extends State<PrecisePickupScreen> {
               padding: EdgeInsets.all(20),
               child: Text(
                 Provider.of<AppInfo>(context).userPickupLocation != null
-                    ? '${Provider.of<AppInfo>(context).userPickupLocation!.locationName!.substring(0, 15)}...'
+                    ? truncate(
+                      Provider.of<AppInfo>(
+                        context,
+                      ).userPickupLocation!.locationName!,
+                      15,
+                    )
                     : 'Add Pickup Location',
                 overflow: TextOverflow.visible,
                 softWrap: true,
