@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/Users/trijalsrivastava/AndroidStudioProjects/chalo_kart_user/linux"
+    "cmake.sourceDirectory": "/Users/trijalsrivastava/AndroidStudioProjects/chalo_kart_user/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

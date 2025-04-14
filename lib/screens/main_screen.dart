@@ -65,6 +65,7 @@ class _MainScreenState extends State<MainScreen> {
   double AssignedDriverInfoContainerHeight = 0;
   double showSearchingForDriverContainerHeight = 0;
   Position? userCurrentPosition;
+  double numberOfSeats = 0;
 
   var geoLocation = Geolocator();
 
@@ -384,7 +385,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void showSuggestedRidesContainer() {
     setState(() {
-      SuggestedRidesContainerHeight = 550;
+      SuggestedRidesContainerHeight = 650;
       bottomPaddingOfMap = 400;
     });
   }
@@ -423,9 +424,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   saveRideRequestInformation(String selectedVehicleType) {
-    if(selectedVehicleType=="12-seater Cart"){
-      fareAmountCalculated=fareAmountCalculated+20;
+    if (selectedVehicleType == "12-seater Cart") {
+      fareAmountCalculated = fareAmountCalculated + 20;
     }
+    fareAmountCalculated = fareAmountCalculated * numberOfSeats;
     //1.Save the ride information
     referenceRideRequest =
         FirebaseDatabase.instance.ref().child("All Ride Requests").push();
@@ -450,8 +452,8 @@ class _MainScreenState extends State<MainScreen> {
       "originAddress": originLocation.locationName,
       "destinationAddress": destinationLocation.locationName,
       "driverId": "waiting",
-      "userId":userModelCurrentInfo!.id,
-      "fareAmount":fareAmountCalculated.toStringAsFixed(0),
+      "userId": userModelCurrentInfo!.id,
+      "fareAmount": fareAmountCalculated.toStringAsFixed(0),
     };
     referenceRideRequest!.set(userInformationMap);
     tripRideRequestsInfoStreamSubscription = referenceRideRequest!.onValue
@@ -459,29 +461,37 @@ class _MainScreenState extends State<MainScreen> {
           if (eventSnap.snapshot.value == null) {
             return;
           }
-          if((eventSnap.snapshot.value as Map)["car_details"]==null)return;
-          if ((eventSnap.snapshot.value as Map)["car_details"]["car_model"] != null) {
+          if ((eventSnap.snapshot.value as Map)["car_details"] == null) return;
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_model"] !=
+              null) {
             setState(() {
               driverCartDetailsModel =
-                  (eventSnap.snapshot.value as Map)["car_details"]["car_model"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_model"]
+                      .toString();
             });
           }
-          if ((eventSnap.snapshot.value as Map)["car_details"]["car_color"] != null) {
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_color"] !=
+              null) {
             setState(() {
               driverCartDetailsColor =
-                  (eventSnap.snapshot.value as Map)["car_details"]["car_color"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_color"]
+                      .toString();
             });
           }
-          if ((eventSnap.snapshot.value as Map)["car_details"]["car_number"] != null) {
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_number"] !=
+              null) {
             setState(() {
               driverCartDetailsNumber =
-                  (eventSnap.snapshot.value as Map)["car_details"]["car_number"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_number"]
+                      .toString();
             });
           }
-          if ((eventSnap.snapshot.value as Map)["car_details"]["car_type"] != null) {
+          if ((eventSnap.snapshot.value as Map)["car_details"]["car_type"] !=
+              null) {
             setState(() {
               driverCartDetailsType =
-                  (eventSnap.snapshot.value as Map)["car_details"]["car_type"].toString();
+                  (eventSnap.snapshot.value as Map)["car_details"]["car_type"]
+                      .toString();
             });
           }
           if ((eventSnap.snapshot.value as Map)["driverName"] != null) {
@@ -548,8 +558,9 @@ class _MainScreenState extends State<MainScreen> {
                   context: context,
                   barrierDismissible: false,
                   builder:
-                      (BuildContext context) =>
-                          PayFareAmountDialog(fareAmount: fareAmountCalculated.truncateToDouble()),
+                      (BuildContext context) => PayFareAmountDialog(
+                        fareAmount: fareAmountCalculated.truncateToDouble(),
+                      ),
                 ).then((response) {
                   if (response == "Cash Paid") {
                     //user can rate the driver now
@@ -731,8 +742,6 @@ class _MainScreenState extends State<MainScreen> {
           });
     }
   }
-
-
 
   @override
   void initState() {
@@ -1135,7 +1144,8 @@ class _MainScreenState extends State<MainScreen> {
                             showSearchingForDriverContainerHeight = 0;
                             SuggestedRidesContainerHeight = 0;
                             bottomPaddingOfMap = 200;
-                            searchLocationContainerHeight = 220; // Restore search container
+                            searchLocationContainerHeight =
+                                220; // Restore search container
                           });
                         },
                         child: Container(
@@ -1369,6 +1379,8 @@ class _MainScreenState extends State<MainScreen> {
                               ],
                             ),
                           ),
+
+                          // SizedBox(height: 10),
                           SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -1408,7 +1420,10 @@ class _MainScreenState extends State<MainScreen> {
                                         listen: false,
                                       ).userDropOffLocation !=
                                       null) {
-                                    fareAmountCalculated=AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!);
+                                    fareAmountCalculated =
+                                        AssistantMethods.calculateFareAmountFromOriginToDestination(
+                                          tripDirectionDetailsInfo!,
+                                        );
                                     showSuggestedRidesContainer();
                                   } else {
                                     Fluttertoast.showToast(
@@ -1522,7 +1537,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "SUGGESTED RIDES",
+                        "Suggested Rides",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -1536,6 +1551,7 @@ class _MainScreenState extends State<MainScreen> {
                             onTap: () {
                               setState(() {
                                 selectedVehicleType = "6-seater Cart";
+                                numberOfSeats = 1;
                               });
                             },
                             child: Container(
@@ -1577,7 +1593,7 @@ class _MainScreenState extends State<MainScreen> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Image.asset(
-                                        "images/car.png",
+                                        "images/car_6.png",
                                         scale: 1,
                                       ),
                                     ),
@@ -1599,7 +1615,7 @@ class _MainScreenState extends State<MainScreen> {
                                     SizedBox(height: 6),
                                     Text(
                                       tripDirectionDetailsInfo != null
-                                          ? "Rs ${(fareAmountCalculated).toStringAsFixed(1)}"
+                                          ? "Rs ${(fareAmountCalculated).toStringAsFixed(1)}/seat"
                                           : "Calculating...",
                                       style: TextStyle(
                                         color:
@@ -1617,9 +1633,9 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-
                               setState(() {
                                 selectedVehicleType = "12-seater Cart";
+                                numberOfSeats = 1;
                               });
                             },
                             child: Container(
@@ -1661,7 +1677,7 @@ class _MainScreenState extends State<MainScreen> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Image.asset(
-                                        "images/car.png",
+                                        "images/car_12.png",
                                         scale: 1,
                                       ),
                                     ),
@@ -1683,7 +1699,7 @@ class _MainScreenState extends State<MainScreen> {
                                     SizedBox(height: 6),
                                     Text(
                                       tripDirectionDetailsInfo != null
-                                          ? "Rs ${((fareAmountCalculated +20)).toStringAsFixed(1)}"
+                                          ? "Rs ${((fareAmountCalculated + 20)).toStringAsFixed(1)}/seat"
                                           : "Calculating...",
                                       style: TextStyle(
                                         color:
@@ -1701,6 +1717,59 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 20),
+                      Text(
+                        "Number of Seats",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Slider(
+                              value: numberOfSeats,
+                              min: 0,
+                              max:
+                                  selectedVehicleType == "12-seater Cart"
+                                      ? 12
+                                      : 6,
+                              divisions:
+                                  selectedVehicleType == "12-seater Cart"
+                                      ? 12
+                                      : 6,
+                              activeColor:
+                                  darkTheme
+                                      ? Colors.greenAccent.shade400
+                                      : Colors.green,
+                              inactiveColor:
+                                  darkTheme
+                                      ? Colors.grey.shade800
+                                      : Colors.grey.shade200,
+                              label: numberOfSeats.round().toString(),
+                              onChanged: (value) {
+                                setState(() {
+                                  numberOfSeats = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 50,
+                            alignment: Alignment.center,
+                            child: Text(
+                              numberOfSeats.round().toString(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
                       SizedBox(height: 20),
                       Expanded(
                         child: GestureDetector(

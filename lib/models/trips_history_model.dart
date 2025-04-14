@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class TripsHistoryModel {
-
   String? time;
   String? originAddress;
   String? destinationAddress;
@@ -34,12 +33,11 @@ class TripsHistoryModel {
     destinationAddress = (dataSnapshot.value as Map)["destinationAddress"];
     status = (dataSnapshot.value as Map)["status"];
     fareAmount = (dataSnapshot.value as Map)["fareAmount"];
-    carType=(dataSnapshot.value as Map)["carType"];
-    carModel=(dataSnapshot.value as Map)["carModel"];
-    carNumber=(dataSnapshot.value as Map)["carNumber"];
-    carColor=(dataSnapshot.value as Map)["carColor"];
+    carType = (dataSnapshot.value as Map)["carType"];
+    carModel = (dataSnapshot.value as Map)["carModel"];
+    carNumber = (dataSnapshot.value as Map)["carNumber"];
+    carColor = (dataSnapshot.value as Map)["carColor"];
     driverName = (dataSnapshot.value as Map)["driverName"];
     ratings = (dataSnapshot.value as Map)["ratings"];
   }
-
 }
