@@ -560,6 +560,7 @@ class _MainScreenState extends State<MainScreen> {
                   builder:
                       (BuildContext context) => PayFareAmountDialog(
                         fareAmount: fareAmountCalculated.truncateToDouble(),
+                        assignedDriverId: (eventSnap.snapshot.value as Map)["driverId"].toString(),
                       ),
                 ).then((response) {
                   if (response == "Cash Paid") {

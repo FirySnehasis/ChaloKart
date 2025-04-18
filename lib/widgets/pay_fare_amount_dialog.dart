@@ -3,14 +3,17 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../screens/splash_screen.dart';
+// Import the RateDriverScreen
+import '../screens/rate_driver_screen.dart';
 
 class PayFareAmountDialog extends StatefulWidget {
   final double fareAmount;
+  final String? assignedDriverId; // Add driver ID as a parameter
 
   const PayFareAmountDialog({
     super.key,
     required this.fareAmount,
+    this.assignedDriverId, // Make it optional but will be needed for rating
   });
 
   @override
@@ -23,8 +26,7 @@ class _PayFareAmountDialogState extends State<PayFareAmountDialog> {
   Future<void> deductAmountFromWallet(String newWalletAmount) async {
     try {
       // Update wallet amount in Firebase
-
-       userRef
+      userRef
           .child(firebaseAuth.currentUser!.uid)
           .update({"wallet_amount": newWalletAmount});
 
@@ -34,12 +36,22 @@ class _PayFareAmountDialogState extends State<PayFareAmountDialog> {
       });
 
       Fluttertoast.showToast(msg: "Payment Successful!");
+
+      // Pop the dialog and return status
       Navigator.pop(context, "Amount Deducted from Wallet");
       print("Amount Deducted from Wallet");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (c) => SplashScreen()),
-      );
+
+      // Navigate to RateDriverScreen instead of SplashScreen
+      if (widget.assignedDriverId != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (c) => RateDriverScreen(
+              assignedDriverId: widget.assignedDriverId!,
+            ),
+          ),
+        );
+      }
     } catch (error) {
       Fluttertoast.showToast(msg: "Error: Failed to process payment");
       print("Error during payment: $error");
@@ -55,10 +67,10 @@ class _PayFareAmountDialogState extends State<PayFareAmountDialog> {
 
       // Parse amounts carefully
       double currentWalletAmount = double.parse(userModelCurrentInfo!.wallet_amount!);
-      
+
       // Use widget.fareAmount directly
       double fareAmount = widget.fareAmount;
-      
+
       // Debug prints to verify values
       print("Current wallet amount: $currentWalletAmount");
       print("Fare to deduct: $fareAmount");
@@ -158,4 +170,3 @@ class _PayFareAmountDialogState extends State<PayFareAmountDialog> {
     );
   }
 }
-

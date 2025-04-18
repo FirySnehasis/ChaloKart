@@ -8,8 +8,7 @@ import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.da
 class RateDriverScreen extends StatefulWidget {
   final String? assignedDriverId;
 
-  RateDriverScreen({Key? key, required this.assignedDriverId})
-    : super(key: key);
+  const RateDriverScreen({super.key, required this.assignedDriverId});
 
   @override
   State<RateDriverScreen> createState() => _RateDriverScreenState();

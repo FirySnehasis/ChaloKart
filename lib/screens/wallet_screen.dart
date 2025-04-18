@@ -152,46 +152,46 @@ class _WalletScreenState extends State<WalletScreen> {
                   SizedBox(height: 30),
 
                   // Transaction History Section
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Recent Transactions",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        // Placeholder for transaction history
-                        Center(
-                          child: Text(
-                            "No recent transactions",
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   width: double.infinity,
+                  //   padding: EdgeInsets.all(20),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.grey.withOpacity(0.1),
+                  //         spreadRadius: 1,
+                  //         blurRadius: 10,
+                  //         offset: Offset(0, 3),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Text(
+                  //         "Recent Transactions",
+                  //         style: TextStyle(
+                  //           fontSize: 18,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: Colors.grey[800],
+                  //         ),
+                  //       ),
+                  //       SizedBox(height: 20),
+                  //       // Placeholder for transaction history
+                  //       Center(
+                  //         child: Text(
+                  //           "No recent transactions",
+                  //           style: TextStyle(
+                  //             color: Colors.grey[600],
+                  //             fontSize: 16,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
