@@ -320,8 +320,9 @@ class _NewTripScreenState extends State<NewTripScreen> {
       if (event.snapshot.value != null) {
         setState(() {
           fareAmountString = event.snapshot.value.toString();
-          // If you need the double value as well:
-          totalFareAmount = double.tryParse(fareAmountString) ?? 0;
+
+          totalFareAmount = double.parse(fareAmountString) ;
+          print(totalFareAmount);
         });
       }
     } catch (error) {
@@ -409,7 +410,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
     showDialog(
       context: context,
       barrierDismissible: true, // Make dismissible
-      builder: (BuildContext context) => ProgressDialog(message: "Calculating fare...", timeoutSeconds: 20),
+      builder: (BuildContext context) => ProgressDialog(message: "Calculating fare...", timeoutSeconds: 5),
     );
     
     // Make sure we have the current position
@@ -468,14 +469,17 @@ class _NewTripScreenState extends State<NewTripScreen> {
       FirebaseDatabase.instance.ref().child("All Ride Requests").child(widget.userRideRequestDetails.rideRequestId!).child("status").set("ended");
 
       // Update the ride status and fare amount in the database
+      fetchFareAmount();
       updateRideStatus("ended");
-      
+      print("Divyam");
+      print(totalFareAmount);
       // Show fare amount dialog
       showFareDialog(totalFareAmount);
       
       // Save fare amount to driver's earnings
       saveFareAmountToDriverEarnings(totalFareAmount);
       onlineDriverData.totalRides!=(int.parse(onlineDriverData.totalRides!)+1).toString();
+      FirebaseDatabase.instance.ref().child("drivers").child(firebaseAuth.currentUser!.uid).child("totalRides").set(onlineDriverData.totalRides);
       
     } catch (e) {
       // Make sure to dismiss the progress dialog if there's an error
@@ -484,6 +488,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
       }
       
       print("Error ending trip: $e");
+      print("Agarwal");
       Fluttertoast.showToast(msg: "Something went wrong. Using default fare.");
       
       // Use a default fare in case of errors
@@ -510,12 +515,13 @@ class _NewTripScreenState extends State<NewTripScreen> {
         .set(status);
   }
   
-  void showFareDialog(double totalFareAmount) {
+  void showFareDialog(double fare) {
+    fare=totalFareAmount;
     if (mounted) {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => FareAmountCollectionDialog(totalFareAmount: totalFareAmount),
+        builder: (BuildContext context) => FareAmountCollectionDialog(totalFareAmount: fare),
       );
     }
   }

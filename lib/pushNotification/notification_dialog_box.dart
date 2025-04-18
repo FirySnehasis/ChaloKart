@@ -128,6 +128,35 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                 ],
               ),
             ),
+
+
+            //number of seats
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 15),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.all(5),
+
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Text(
+                      "Number of Seats : 5",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             
             // Divider line
             Container(
