@@ -3,7 +3,6 @@
 Chalokart is a Flutter-based mobile application that provides a seamless user experience for location-based services. The app integrates with Firebase for authentication and real-time data management, and uses Google Maps for location services.
 
 Here is the link to download the apk file for ChaloKart User : https://drive.google.com/drive/folders/1cog-fnsOMIzHFqsGPa9Fu4xEjQx_iyDy?usp=sharing
-Here is the link to download the apk file for ChaloKart Driver : https://drive.google.com/drive/folders/1RefWNAbbGonp-d4KDjLwEIVUawiW2uYY?usp=sharing
 
 ## Features
 
