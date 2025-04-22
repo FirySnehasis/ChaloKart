@@ -94,11 +94,3 @@ Here is the link to download the apk file for ChaloKart Driver : https://drive.g
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-For any inquiries, please reach out to [your-email@example.com](mailto:your-email@example.com)
