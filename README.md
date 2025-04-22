@@ -3,6 +3,8 @@
 ## Overview
 ChaloKart Driver is a Flutter-based mobile application designed for ride-hailing service drivers. This app provides a comprehensive platform for drivers to receive ride requests, manage their availability, track earnings, and maintain their profile.
 
+Here is the link to download the apk file for ChaloKart Driver : https://drive.google.com/drive/folders/1RefWNAbbGonp-d4KDjLwEIVUawiW2uYY?usp=sharing
+
 ## Features
 
 ### For Drivers
